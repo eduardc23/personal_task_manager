@@ -1,5 +1,5 @@
 name: personal_task_manager
-description: "Personal Task Manager - Clean Architecture Reference."
+description: "Aplicación diseñada para gestionar tareas diarias con persistencia local"
 publish_to: 'none'
 
 version: 1.0.0+1

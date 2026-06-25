@@ -28,10 +28,16 @@ migrate_working_dir/
 **/ios/Flutter/.last_build_id
 .dart_tool/
 .flutter-plugins-dependencies
+.metadata
 .pub-cache/
 .pub/
 /build/
 /coverage/
+pubspec.lock
+
+# Generated files
+*.g.dart
+*.freezed.dart
 
 # Symbolication related
 app.*.symbols

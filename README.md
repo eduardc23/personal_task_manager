@@ -1,53 +1,53 @@
-# Personal Task Manager
+# Gestor de Tareas Personal
 
-A Flutter application designed to help you manage your daily tasks. Built with Clean Architecture principles.
+Una aplicación Flutter diseñada para gestionar tareas diarias. Construida con los principios de Arquitectura Limpia (Clean Architecture).
 
-## Features
+## Características
 
-- **Task Management**: Create, view, update, and delete tasks.
-- **Persistent Storage**: Your tasks are saved locally using the Drift database, so they persist even after closing the app.
-- **Clean Architecture**: Organized into data, domain, and presentation layers for better maintainability and testability.
-- **Modern State Management**: Uses Riverpod for efficient and reactive state management.
-- **Type Safety**: Leverages Freezed for immutable data models and type-safe code generation.
+- **Gestión de Tareas**: Crea, visualiza, actualiza y elimina tareas.
+- **Almacenamiento Persistente**: Tus tareas se guardan localmente utilizando la base de datos Drift, por lo que persisten incluso después de cerrar la aplicación.
+- **Arquitectura Limpia**: Organizada en capas de datos, dominio y presentación para una mejor mantenibilidad y capacidad de prueba.
+- **Gestión de Estado Moderna**: Utiliza Riverpod para una gestión de estado eficiente y reactiva.
+- **Seguridad de Tipos**: Aprovecha Freezed para modelos de datos inmutables y generación de código con seguridad de tipos.
 
-## Project Structure
+## Estructura del Proyecto
 
 ```
 lib/
- ├── main.dart                          # Entry point of the app
- ├── core/                              # Shared components and configurations
- │    ├── database/                     # Drift database setup and connection
- │    └── validators/                   # Common form validators
- └── features/                          # Feature-based organization
-      └── tasks/                        # Main module for task management
-           ├── data/                    # Repositories implementation and data sources
-           ├── domain/                  # Business logic, entities, and use cases
-           │    ├── entities/           # Task entity defined with Freezed
-           │    └── use_cases/          # Task-related use cases (Create, Read, Update, Delete)
-           └── presentation/            # UI layer with Riverpod providers and screens
-                ├── providers/          # State management logic
-                └── screens/            # Main application screens (Task List and Task Form)
+ ├── main.dart                          # Punto de entrada de la aplicación
+ ├── core/                              # Componentes compartidos y configuraciones
+ │    ├── database/                     # Configuración y conexión de la base de datos Drift
+ │    └── validators/                   # Validadores de formularios comunes
+ └── features/                          # Organización basada en características
+      └── tasks/                        # Módulo principal para la gestión de tareas
+           ├── data/                    # Implementación de repositorios y fuentes de datos
+           ├── domain/                  # Lógica de negocio, entidades y casos de uso
+           │    ├── entities/           # Entidad de tarea definida con Freezed
+           │    └── use_cases/          # Casos de uso relacionados con tareas (Crear, Leer, Actualizar, Eliminar)
+           └── presentation/            # Capa de UI con proveedores de Riverpod y pantallas
+                ├── providers/          # Lógica de gestión de estado
+                └── screens/            # Pantallas principales de la aplicación (Lista de Tareas y Formulario de Tarea)
 ```
 
-## How to run the project
+## Cómo ejecutar el proyecto
 
-To get this project running locally, follow these steps:
+Para que este proyecto funcione localmente, sigue estos pasos:
 
-1. **Prerequisites**: Make sure you have the [Flutter SDK](https://docs.flutter.dev/get-started/install) installed.
-2. **Clone the repo**:
+1. **Prerrequisitos**: Asegúrate de tener instalado el [SDK de Flutter](https://docs.flutter.dev/get-started/install).
+2. **Clonar el repositorio**:
    ```bash
    git clone https://github.com/eduardc23/personal_task_manager
    cd personal_task_manager
    ```
-3. **Install dependencies**:
+3. **Instalar dependencias**:
    ```bash
    flutter pub get
    ```
-4. **Generate code**: This project uses `build_runner` for generating code (Drift, Riverpod, Freezed). Run the following command:
+4. **Generar código**: Este proyecto utiliza `build_runner` para generar código (Drift, Riverpod, Freezed). Ejecuta el siguiente comando:
    ```bash
    flutter pub run build_runner build --delete-conflicting-outputs
    ```
-5. **Run the app**:
+5. **Ejecutar la aplicación**:
    ```bash
    flutter run
    ```
