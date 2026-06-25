@@ -5,7 +5,7 @@ Una aplicación Flutter diseñada para gestionar tareas diarias. Construida con 
 ## Características
 
 - **Gestión de Tareas**: Crea, visualiza, actualiza y elimina tareas.
-- **Almacenamiento Persistente**: Tus tareas se guardan localmente utilizando la base de datos Drift, por lo que persisten incluso después de cerrar la aplicación.
+- **Almacenamiento Persistente**: Tus tareas se guardan localmente utilizando Hive con adaptadores manuales, por lo que persisten incluso después de cerrar la aplicación.
 - **Arquitectura Limpia**: Organizada en capas de datos, dominio y presentación para una mejor mantenibilidad y capacidad de prueba.
 - **Gestión de Estado Moderna**: Utiliza Riverpod para una gestión de estado eficiente y reactiva.
 - **Seguridad de Tipos**: Aprovecha Freezed para modelos de datos inmutables y generación de código con seguridad de tipos.
@@ -16,7 +16,7 @@ Una aplicación Flutter diseñada para gestionar tareas diarias. Construida con 
 lib/
  ├── main.dart                          # Punto de entrada de la aplicación
  ├── core/                              # Componentes compartidos y configuraciones
- │    ├── database/                     # Configuración y conexión de la base de datos Drift
+ │    ├── database/                     # Configuración y conexión de la base de datos Hive
  │    └── validators/                   # Validadores de formularios comunes
  └── features/                          # Organización basada en características
       └── tasks/                        # Módulo principal para la gestión de tareas
@@ -43,7 +43,7 @@ Para que este proyecto funcione localmente, sigue estos pasos:
    ```bash
    flutter pub get
    ```
-4. **Generar código**: Este proyecto utiliza `build_runner` para generar código (Drift, Riverpod, Freezed). Ejecuta el siguiente comando:
+4. **Generar código**: Este proyecto utiliza `build_runner` para generar código (Riverpod, Freezed). Ejecuta el siguiente comando:
    ```bash
    flutter pub run build_runner build --delete-conflicting-outputs
    ```

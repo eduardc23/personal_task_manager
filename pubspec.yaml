@@ -19,9 +19,9 @@ dependencies:
   # Inmutabilidad y Generación de Código
   freezed_annotation: ^3.1.0
 
-  # Persistencia Local (Drift)
-  drift: ^2.20.0
-  drift_flutter: ^0.3.0
+  # Persistencia Local (Hive)
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
   path_provider: ^2.1.6
 
 
@@ -34,7 +34,6 @@ dev_dependencies:
   build_runner: ^2.15.0
   riverpod_generator: ^4.0.4
   freezed: ^3.2.3
-  drift_dev: ^2.20.0
 
 
 flutter:

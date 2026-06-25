@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:personal_task_manager/core/constants/app_constants.dart';
 import '../../providers/task_provider.dart';
 import '../task_form/task_form_screen.dart';
 import 'widgets/task_item.dart';
@@ -23,17 +24,19 @@ class TaskListScreen extends ConsumerWidget {
                 children: [
                   Icon(
                     Icons.assignment_turned_in_outlined,
-                    size: 80,
-                    color: theme.colorScheme.primary.withOpacity(0.5),
+                    size: AppConstants.iconSizeExtraLarge,
+                    color: theme.colorScheme.primary.withValues(
+                      alpha: AppConstants.opacityHalf,
+                    ),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppConstants.spacingExtraLarge),
                   Text(
                     'No pending tasks',
                     style: theme.textTheme.titleLarge?.copyWith(
                       color: theme.colorScheme.secondary,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppConstants.spacingSmall),
                   Text(
                     'Tap the button below to add one',
                     style: theme.textTheme.bodyMedium?.copyWith(
@@ -46,11 +49,16 @@ class TaskListScreen extends ConsumerWidget {
           }
           return ListView.builder(
             itemCount: tasks.length,
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12,
+              vertical: AppConstants.paddingSmall,
+            ),
             itemBuilder: (context, index) {
               final task = tasks[index];
               return Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
+                padding: const EdgeInsets.only(
+                  bottom: AppConstants.paddingSmall,
+                ),
                 child: TaskItem(task: task),
               );
             },
@@ -61,14 +69,17 @@ class TaskListScreen extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.error_outline, color: Colors.red, size: 60),
-              const SizedBox(height: 16),
+              const Icon(
+                Icons.error_outline,
+                color: Colors.red,
+                size: AppConstants.iconSizeLarge,
+              ),
+              const SizedBox(height: AppConstants.spacingMedium),
               Text('Something went wrong: $err'),
             ],
           ),
         ),
       ),
-
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => Navigator.push(
           context,
@@ -76,7 +87,9 @@ class TaskListScreen extends ConsumerWidget {
         ),
         label: const Text('Add Task'),
         icon: const Icon(Icons.add),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppConstants.borderRadiusLarge),
+        ),
       ),
     );
   }

@@ -13,38 +13,47 @@ class TaskList extends _$TaskList {
   }
 
   Future<void> addTask(String title, String description) async {
-    state = const AsyncLoading();
+    final currentTasks = state.value ?? [];
     state = await AsyncValue.guard(() async {
       final newTask = Task(title: title, description: description);
-      await ref.read(addTaskUseCaseProvider).execute(newTask);
-      ref.invalidateSelf();
-      return future;
+      final createdTask = await ref
+          .read(addTaskUseCaseProvider)
+          .execute(newTask);
+      return [...currentTasks, createdTask];
     });
   }
 
   Future<void> updateTask(Task task) async {
-    state = const AsyncLoading();
+    final currentTasks = state.value ?? [];
     state = await AsyncValue.guard(() async {
-      await ref.read(updateTaskUseCaseProvider).execute(task);
-      ref.invalidateSelf();
-      return future;
+      final updatedTask = await ref
+          .read(updateTaskUseCaseProvider)
+          .execute(task);
+      return currentTasks
+          .map((t) => t.id == task.id ? updatedTask : t)
+          .toList();
     });
   }
 
   Future<void> deleteTask(int id) async {
+    final currentTasks = state.value ?? [];
     state = await AsyncValue.guard(() async {
       await ref.read(deleteTaskUseCaseProvider).execute(id);
-      ref.invalidateSelf();
-      return future;
+      return currentTasks.where((task) => task.id != id).toList();
     });
   }
 
   Future<void> toggleTaskStatus(Task task) async {
+    final currentTasks = state.value ?? [];
+    final toggled = task.copyWith(isCompleted: !task.isCompleted);
+
     state = await AsyncValue.guard(() async {
-      final updatedTask = task.copyWith(isCompleted: !task.isCompleted);
-      await ref.read(updateTaskUseCaseProvider).execute(updatedTask);
-      ref.invalidateSelf();
-      return future;
+      final updatedTask = await ref
+          .read(updateTaskUseCaseProvider)
+          .execute(toggled);
+      return currentTasks
+          .map((t) => t.id == task.id ? updatedTask : t)
+          .toList();
     });
   }
 }

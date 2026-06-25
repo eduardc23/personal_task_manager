@@ -2,11 +2,11 @@ import '../entities/task.dart';
 import '../repositories/task_repository.dart';
 
 class GetTasksUseCase {
-  final TaskRepository repository;
+  final TaskRepository _repository;
 
-  GetTasksUseCase(this.repository);
+  GetTasksUseCase(this._repository);
 
   Future<List<Task>> execute() {
-    return repository.getTasks();
+    return _repository.getTasks();
   }
 }

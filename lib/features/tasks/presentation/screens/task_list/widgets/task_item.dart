@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:personal_task_manager/core/constants/app_constants.dart';
 import '../../../../domain/entities/task.dart';
 import '../../../providers/task_provider.dart';
 import '../../task_form/task_form_screen.dart';
@@ -18,10 +19,10 @@ class TaskItem extends ConsumerWidget {
       direction: DismissDirection.endToStart,
       background: Container(
         alignment: Alignment.centerRight,
-        padding: const EdgeInsets.only(right: 20.0),
+        padding: const EdgeInsets.only(right: AppConstants.spacingLarge),
         decoration: BoxDecoration(
           color: Colors.redAccent.shade100,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppConstants.borderRadiusLarge),
         ),
         child: const Icon(Icons.delete, color: Colors.white),
       ),
@@ -32,21 +33,22 @@ class TaskItem extends ConsumerWidget {
         }
       },
       child: Card(
-        elevation: 0,
         color: task.isCompleted
-            ? theme.colorScheme.surfaceContainerHighest.withOpacity(0.5)
+            ? theme.colorScheme.surfaceContainerHighest.withValues(alpha:
+                AppConstants.opacityHalf,
+              )
             : theme.colorScheme.surfaceContainerLow,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppConstants.borderRadiusLarge),
           side: BorderSide(
             color: task.isCompleted
                 ? Colors.transparent
                 : theme.colorScheme.outlineVariant,
-            width: 1,
+            width: AppConstants.borderSideWidth,
           ),
         ),
         child: InkWell(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppConstants.borderRadiusLarge),
           onTap: () {
             Navigator.push(
               context,
@@ -54,15 +56,19 @@ class TaskItem extends ConsumerWidget {
             );
           },
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            padding: const EdgeInsets.symmetric(
+              vertical: AppConstants.paddingSmall,
+            ),
             child: ListTile(
               leading: Transform.scale(
-                scale: 1.2,
+                scale: AppConstants.checkboxScale,
                 child: Checkbox(
                   value: task.isCompleted,
                   activeColor: theme.colorScheme.primary,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(
+                      AppConstants.borderRadiusSmall,
+                    ),
                   ),
                   onChanged: (_) {
                     ref.read(taskListProvider.notifier).toggleTaskStatus(task);
@@ -73,20 +79,29 @@ class TaskItem extends ConsumerWidget {
                 task.title,
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
-                  decoration: task.isCompleted ? TextDecoration.lineThrough : null,
-                  color: task.isCompleted ? theme.colorScheme.outline : theme.colorScheme.onSurface,
+                  decoration:
+                      task.isCompleted ? TextDecoration.lineThrough : null,
+                  color: task.isCompleted
+                      ? theme.colorScheme.outline
+                      : theme.colorScheme.onSurface,
                 ),
               ),
               subtitle: Text(
                 task.description,
-                maxLines: 2,
+                maxLines: AppConstants.summaryMaxLines,
                 overflow: TextOverflow.ellipsis,
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  decoration: task.isCompleted ? TextDecoration.lineThrough : null,
-                  color: task.isCompleted ? theme.colorScheme.outline : theme.colorScheme.onSurfaceVariant,
+                  decoration:
+                      task.isCompleted ? TextDecoration.lineThrough : null,
+                  color: task.isCompleted
+                      ? theme.colorScheme.outline
+                      : theme.colorScheme.onSurfaceVariant,
                 ),
               ),
-              trailing: const Icon(Icons.chevron_right, size: 20),
+              trailing: const Icon(
+                Icons.chevron_right,
+                size: AppConstants.iconSizeSmall,
+              ),
             ),
           ),
         ),

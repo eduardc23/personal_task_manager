@@ -1,41 +1,41 @@
-import 'package:drift/drift.dart';
-import 'package:personal_task_manager/core/database/tables/task_table.dart';
-import '../../../../core/database/app_database.dart';
+import 'package:hive/hive.dart';
+import '../models/task_model.dart';
 
 abstract class TaskLocalDataSource {
-  Future<List<TasksEntry>> getTasks();
-
-  Future<void> saveTask(TasksCompanion task);
-
+  Future<List<TaskModel>> getTasks();
+  Future<TaskModel> saveTask(TaskModel task, {int? id});
   Future<void> deleteTask(int taskId);
-
-  Future<TasksEntry?> getTask(int taskId);
 }
 
 class TaskLocalDataSourceImpl implements TaskLocalDataSource {
-  final AppDatabase _db;
+  final Box<TaskModel> _box;
 
-  TaskLocalDataSourceImpl(this._db);
+  TaskLocalDataSourceImpl(this._box);
 
   @override
-  Future<List<TasksEntry>> getTasks() async {
-    return _db.select(_db.tasks).get();
+  Future<List<TaskModel>> getTasks() async {
+    return _box.keys.map((key) {
+      final task = _box.get(key)!;
+      return task.copyWith(id: key as int);
+    }).toList();
   }
 
   @override
-  Future<void> saveTask(TasksCompanion task) async {
-    await _db.into(_db.tasks).insertOnConflictUpdate(task);
+  Future<TaskModel> saveTask(TaskModel task, {int? id}) async {
+    if (id != null) {
+      await _box.put(id, task);
+      return _box.get(id)!;
+    } else {
+      final key = await _box.add(task);
+      return _box.get(key)!;
+    }
   }
+
 
   @override
   Future<void> deleteTask(int taskId) async {
-    await (_db.delete(_db.tasks)..where((t) => t.id.equals(taskId))).go();
-  }
-
-  @override
-  Future<TasksEntry?> getTask(int taskId) async {
-    return (_db.select(
-      _db.tasks,
-    )..where((t) => t.id.equals(taskId))).getSingleOrNull();
+    await _box.delete(taskId);
   }
 }
+
+

@@ -8,8 +8,8 @@ part 'task_data_providers.g.dart';
 
 @riverpod
 TaskLocalDataSource taskLocalDataSource(Ref ref) {
-  final db = ref.watch(appDatabaseProvider);
-  return TaskLocalDataSourceImpl(db);
+  final box = ref.watch(taskBoxProvider);
+  return TaskLocalDataSourceImpl(box);
 }
 
 @riverpod

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:personal_task_manager/core/constants/app_constants.dart';
 import 'package:personal_task_manager/features/tasks/presentation/screens/task_form/validators/task_validators.dart';
 import '../../../domain/entities/task.dart';
 import '../../providers/task_provider.dart';
@@ -37,22 +38,15 @@ class _TaskFormScreenState extends ConsumerState<TaskFormScreen> {
     super.dispose();
   }
 
-  Future<void> _saveTask() async {
+  Future<void> _submitForm() async {
     if (!_formKey.currentState!.validate()) return;
-
-    await _persistTask();
-
-    if (!mounted) return;
-
-    if (ref.read(taskListProvider).hasError) {
-      _showErrorSnackBar();
-      return;
+    await _saveTask();
+    if (mounted) {
+      Navigator.pop(context);
     }
-
-    Navigator.pop(context);
   }
 
-  Future<void> _persistTask() async {
+  Future<void> _saveTask() async {
     final notifier = ref.read(taskListProvider.notifier);
     final title = _titleController.text.trim();
     final description = _descriptionController.text.trim();
@@ -68,29 +62,16 @@ class _TaskFormScreenState extends ConsumerState<TaskFormScreen> {
     }
   }
 
-  void _showErrorSnackBar() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text('The task could not be saved. Please try again.'),
-        backgroundColor: Theme.of(context).colorScheme.error,
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(isEditing ? 'Edit Task' : 'New Task'),
-        elevation: 0,
-      ),
+      appBar: AppBar(title: Text(isEditing ? 'Edit Task' : 'New Task')),
       body: Container(
         decoration: BoxDecoration(color: theme.colorScheme.surface),
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(AppConstants.paddingLarge),
           child: Form(
             key: _formKey,
             child: Column(
@@ -103,39 +84,43 @@ class _TaskFormScreenState extends ConsumerState<TaskFormScreen> {
                     color: theme.colorScheme.primary,
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppConstants.spacingExtraLarge),
                 TaskTextField(
                   controller: _titleController,
                   label: 'Title',
                   prefixIcon: Icons.title,
                   validator: TaskValidators.title,
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: AppConstants.spacingLarge),
                 TaskTextField(
                   controller: _descriptionController,
                   label: 'Description',
                   prefixIcon: Icons.description_outlined,
-                  maxLines: 5,
+                  maxLines: AppConstants.descriptionMaxLines,
                   validator: TaskValidators.description,
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: AppConstants.spacingHuge),
                 SizedBox(
                   width: double.infinity,
-                  height: 56,
                   child: ElevatedButton(
-                    onPressed: _saveTask,
+                    onPressed: _submitForm,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: theme.colorScheme.primary,
                       foregroundColor: theme.colorScheme.onPrimary,
-                      elevation: 2,
+                      elevation: AppConstants.elevationLow,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(
+                          AppConstants.borderRadiusLarge,
+                        ),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: AppConstants.paddingMedium,
                       ),
                     ),
                     child: Text(
                       isEditing ? 'Save Changes' : 'Create Task',
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: AppConstants.fontSizeButton,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

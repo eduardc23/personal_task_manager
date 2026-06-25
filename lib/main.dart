@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'core/constants/app_constants.dart';
+import 'features/tasks/data/models/task_adapter.dart';
+import 'features/tasks/data/models/task_model.dart';
 import 'features/tasks/presentation/screens/task_list/task_list_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  await Hive.initFlutter();
+  Hive.registerAdapter(TaskModelAdapter());
+  await Hive.openBox<TaskModel>(AppConstants.taskBoxName);
 
   runApp(
     const ProviderScope(

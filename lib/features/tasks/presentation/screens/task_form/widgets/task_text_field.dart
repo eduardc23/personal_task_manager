@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:personal_task_manager/core/constants/app_constants.dart';
 
 class TaskTextField extends StatelessWidget {
   final TextEditingController controller;
@@ -27,14 +28,19 @@ class TaskTextField extends StatelessWidget {
         labelText: label,
         prefixIcon: Icon(prefixIcon),
         filled: true,
-        fillColor: theme.colorScheme.surfaceContainerHighest.withOpacity(0.3),
+        fillColor: theme.colorScheme.surfaceContainerHighest.withValues(
+          alpha: AppConstants.opacityLow,
+        ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppConstants.borderRadiusMedium),
           borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: theme.colorScheme.primary, width: 2),
+          borderRadius: BorderRadius.circular(AppConstants.borderRadiusMedium),
+          borderSide: BorderSide(
+            color: theme.colorScheme.primary,
+            width: AppConstants.borderSideWidthFocused,
+          ),
         ),
       ),
       validator: validator,

@@ -1,11 +1,11 @@
+import 'package:hive/hive.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../app_database.dart';
+import '../../constants/app_constants.dart';
+import '../../../features/tasks/data/models/task_model.dart';
 
 part 'database_provider.g.dart';
 
 @riverpod
-AppDatabase appDatabase(Ref ref) {
-  final db = AppDatabase();
-  ref.onDispose(() => db.close());
-  return db;
+Box<TaskModel> taskBox(Ref ref) {
+  return Hive.box<TaskModel>(AppConstants.taskBoxName);
 }
