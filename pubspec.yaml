@@ -12,17 +12,17 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.8
   
-  # Gestión de Estado e Inyección de Dependencias (Riverpod 3)
+  # Gestión de Estado
   flutter_riverpod: ^3.3.2
   riverpod_annotation: ^4.0.3
 
-  # Inmutabilidad y Generación de Código
+  # Inmutabilidad
   freezed_annotation: ^3.1.0
 
-  # Persistencia Local (Hive)
+  # Persistencia Local
   hive: ^2.2.3
   hive_flutter: ^1.1.0
-  path_provider: ^2.1.6
+
 
 
 dev_dependencies:
