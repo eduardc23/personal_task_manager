@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:personal_task_manager/core/constants/app_constants.dart';
 import 'package:personal_task_manager/features/tasks/presentation/screens/task_form/validators/task_validators.dart';
+import '../../../../../core/error/failure_message_extension.dart';
+import '../../../../../core/error/failures.dart';
 import '../../../domain/entities/task.dart';
 import '../../providers/task_provider.dart';
 import 'widgets/task_text_field.dart';
@@ -19,7 +21,7 @@ class _TaskFormScreenState extends ConsumerState<TaskFormScreen> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _titleController;
   late TextEditingController _descriptionController;
-  late bool isEditing;
+  late bool isUpdateOperation;
 
   @override
   void initState() {
@@ -28,7 +30,7 @@ class _TaskFormScreenState extends ConsumerState<TaskFormScreen> {
     _descriptionController = TextEditingController(
       text: widget.task?.description ?? '',
     );
-    isEditing = widget.task != null;
+    isUpdateOperation = widget.task != null;
   }
 
   @override
@@ -40,14 +42,21 @@ class _TaskFormScreenState extends ConsumerState<TaskFormScreen> {
 
   Future<void> _submitForm() async {
     if (!_formKey.currentState!.validate()) return;
-    await _saveTask();
-    if (mounted) {
-      Navigator.pop(context);
+
+    try {
+      await _saveTask();
+      if (mounted) {
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      if (mounted) {
+        _showErrorSnackBar(e);
+      }
     }
   }
 
   Future<void> _saveTask() async {
-    final notifier = ref.read(taskListProvider.notifier);
+    final notifier = ref.read(tasksProvider.notifier);
     final title = _titleController.text.trim();
     final description = _descriptionController.text.trim();
 
@@ -62,12 +71,22 @@ class _TaskFormScreenState extends ConsumerState<TaskFormScreen> {
     }
   }
 
+  void _showErrorSnackBar(Object error) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(error.toUserMessage()),
+        backgroundColor: Theme.of(context).colorScheme.error,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text(isEditing ? 'Edit Task' : 'New Task')),
+      appBar: AppBar(title: Text(isUpdateOperation ? 'Edit Task' : 'New Task')),
       body: Container(
         decoration: BoxDecoration(color: theme.colorScheme.surface),
         child: SingleChildScrollView(
@@ -78,7 +97,7 @@ class _TaskFormScreenState extends ConsumerState<TaskFormScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  isEditing ? 'Update your task' : 'Create a new task',
+                  isUpdateOperation ? 'Update your task' : 'Create a new task',
                   style: theme.textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: theme.colorScheme.primary,
@@ -118,7 +137,7 @@ class _TaskFormScreenState extends ConsumerState<TaskFormScreen> {
                       ),
                     ),
                     child: Text(
-                      isEditing ? 'Save Changes' : 'Create Task',
+                      isUpdateOperation ? 'Save Changes' : 'Create Task',
                       style: const TextStyle(
                         fontSize: AppConstants.fontSizeButton,
                         fontWeight: FontWeight.bold,

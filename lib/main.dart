@@ -10,8 +10,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
   await Hive.initFlutter();
-  Hive.registerAdapter(TaskModelAdapter());
-  await Hive.openBox<TaskModel>(AppConstants.taskBoxName);
+  Hive.registerAdapter(TaskStorageAdapter());
+  await Hive.openBox<TaskModel>(AppConstants.tasksStorageKey);
 
   runApp(
     const ProviderScope(

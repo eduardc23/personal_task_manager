@@ -7,13 +7,13 @@ import '../../domain/repositories/task_repository.dart';
 part 'task_data_providers.g.dart';
 
 @riverpod
-TaskLocalDataSource taskLocalDataSource(Ref ref) {
-  final box = ref.watch(taskBoxProvider);
-  return TaskLocalDataSourceImpl(box);
+TaskLocalDataSource getTaskLocalDataSource(Ref ref) {
+  final storage = ref.watch(getTaskStorageProvider);
+  return TaskLocalDataSourceImpl(storage);
 }
 
 @riverpod
-TaskRepository taskRepository(Ref ref) {
-  final localDataSource = ref.watch(taskLocalDataSourceProvider);
+TaskRepository getTaskRepository(Ref ref) {
+  final localDataSource = ref.watch(getTaskLocalDataSourceProvider);
   return TaskRepositoryImpl(localDataSource);
 }

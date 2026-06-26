@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 import 'task_model.dart';
 
-class TaskModelAdapter extends TypeAdapter<TaskModel> {
+class TaskStorageAdapter extends TypeAdapter<TaskModel> {
   @override
   final int typeId = 0;
 

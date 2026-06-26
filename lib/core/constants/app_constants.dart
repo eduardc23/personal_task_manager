@@ -1,6 +1,6 @@
 class AppConstants {
   // Database
-  static const String taskBoxName = 'tasks';
+  static const String tasksStorageKey = 'tasks';
 
   // Task Limits
   static const int taskTitleMinLength = 1;

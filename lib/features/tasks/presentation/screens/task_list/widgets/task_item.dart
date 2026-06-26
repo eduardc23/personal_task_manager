@@ -29,7 +29,7 @@ class TaskItem extends ConsumerWidget {
       onDismissed: (_) {
         final id = task.id;
         if (id != null) {
-          ref.read(taskListProvider.notifier).deleteTask(id);
+          ref.read(tasksProvider.notifier).deleteTask(id);
         }
       },
       child: Card(
@@ -71,7 +71,7 @@ class TaskItem extends ConsumerWidget {
                     ),
                   ),
                   onChanged: (_) {
-                    ref.read(taskListProvider.notifier).toggleTaskStatus(task);
+                    ref.read(tasksProvider.notifier).toggleTaskStatus(task);
                   },
                 ),
               ),
