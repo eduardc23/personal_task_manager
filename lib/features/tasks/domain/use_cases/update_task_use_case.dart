@@ -1,12 +1,18 @@
+import '../../../../core/error/failures.dart';
 import '../entities/task.dart';
 import '../repositories/task_repository.dart';
 
 class UpdateTaskUseCase {
-  final TaskRepository _repository;
+  final TaskRepository repository;
 
-  UpdateTaskUseCase(this._repository);
+  UpdateTaskUseCase(this.repository);
 
-  Future<Task> execute(Task task) {
-    return _repository.updateTask(task);
+  Future<Task> call(Task task) async {
+    final id = task.id;
+    if (id == null) {
+      throw const ValidationFailure('You cannot update a task without an ID');
+    }
+
+    return await repository.updateTask(task, id);
   }
 }

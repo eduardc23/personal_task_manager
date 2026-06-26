@@ -6,7 +6,7 @@ class GetTasksUseCase {
 
   GetTasksUseCase(this._repository);
 
-  Future<List<Task>> execute() {
+  List<Task> call() {
     return _repository.getTasks();
   }
 }
