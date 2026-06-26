@@ -2,16 +2,16 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'task_model.freezed.dart';
 
-/// Data model that represents a task as it is stored in the local data source.
+/// Modelo de datos que representa una tarea tal como se almacena en la fuente de datos local.
 ///
-/// Unlike [Task] (the domain entity), this model belongs to the data layer
-/// and is used exclusively for persistence and mapping to and from [Task].
+/// A diferencia de [Task] (la entidad de dominio), este modelo pertenece a la capa de datos
+/// y se utiliza exclusivamente para la persistencia y el mapeo hacia y desde [Task].
 @freezed
 abstract class TaskModel with _$TaskModel {
   const factory TaskModel({
-    /// Unique identifier assigned when the task is persisted.
+    /// Identificador único asignado cuando se persiste la tarea.
     ///
-    /// It is `null` before the task is stored for the first time.
+    /// Es `null` antes de que la tarea se guarde por primera vez.
     int? id,
     required String title,
     required String description,

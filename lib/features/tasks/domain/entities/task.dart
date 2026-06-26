@@ -2,17 +2,17 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'task.freezed.dart';
 
-/// Represents a task within the application's domain.
+/// Representa una tarea dentro del dominio de la aplicación.
 ///
-/// This is the core business entity, independent of any data source
-/// It is used by use cases and repositories to implement and manipulate
-/// task-related business logic.
+/// Esta es la entidad de negocio principal, independiente de cualquier fuente de datos.
+/// Es utilizada por los casos de uso y repositorios para implementar y manipular
+/// la lógica de negocio relacionada con las tareas.
 @freezed
 abstract class Task with _$Task {
   const factory Task({
-    /// Unique task identifier.
-    /// Is `null` when the task has not yet been persisted
-    /// (for example, before being saved for the first time to local storage).
+    /// Identificador único de la tarea.
+    /// Es `null` cuando la tarea aún no ha sido persistida
+    /// (por ejemplo, antes de guardarse por primera vez en el almacenamiento local).
     final int? id,
     required String title,
     required String description,
