@@ -2,8 +2,6 @@ import '../../../../../../core/constants/app_constants.dart';
 import '../../../../../../core/validators/validators.dart';
 
 class TaskValidators {
-  TaskValidators._();
-
   static String? title(String? value) {
     return Validators.compose([
       (v) => Validators.required(v, fieldName: 'title'),

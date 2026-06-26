@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:personal_task_manager/core/constants/app_constants.dart';
+import 'package:personal_task_manager/core/error/failure_message_extension.dart';
 import '../../providers/task_provider.dart';
 import '../task_form/task_form_screen.dart';
 import 'widgets/task_item.dart';
@@ -10,12 +11,12 @@ class TaskListScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final tasksAsync = ref.watch(taskListProvider);
+    final tasksState = ref.watch(tasksProvider);
     final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(title: const Text('My Tasks')),
-      body: tasksAsync.when(
+      body: tasksState.when(
         data: (tasks) {
           if (tasks.isEmpty) {
             return Center(
@@ -75,7 +76,7 @@ class TaskListScreen extends ConsumerWidget {
                 size: AppConstants.iconSizeLarge,
               ),
               const SizedBox(height: AppConstants.spacingMedium),
-              Text('Something went wrong: $err'),
+              Text(err.toUserMessage()),
             ],
           ),
         ),

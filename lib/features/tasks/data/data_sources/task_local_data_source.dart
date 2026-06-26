@@ -1,41 +1,71 @@
 import 'package:hive/hive.dart';
+import '../../../../core/error/exceptions.dart';
 import '../models/task_model.dart';
 
 abstract class TaskLocalDataSource {
-  Future<List<TaskModel>> getTasks();
-  Future<TaskModel> saveTask(TaskModel task, {int? id});
+  List<TaskModel> getTasks();
+
+  Future<TaskModel> createTask(TaskModel task);
+
+  Future<TaskModel> updateTask(TaskModel task, int id);
+
   Future<void> deleteTask(int taskId);
 }
 
 class TaskLocalDataSourceImpl implements TaskLocalDataSource {
-  final Box<TaskModel> _box;
+  final Box<TaskModel> _storage;
 
-  TaskLocalDataSourceImpl(this._box);
-
-  @override
-  Future<List<TaskModel>> getTasks() async {
-    return _box.keys.map((key) {
-      final task = _box.get(key)!;
-      return task.copyWith(id: key as int);
-    }).toList();
-  }
+  TaskLocalDataSourceImpl(this._storage);
 
   @override
-  Future<TaskModel> saveTask(TaskModel task, {int? id}) async {
-    if (id != null) {
-      await _box.put(id, task);
-      return _box.get(id)!;
-    } else {
-      final key = await _box.add(task);
-      return _box.get(key)!;
+  List<TaskModel> getTasks() {
+    try {
+      return _storage.keys.map((key) {
+        final task = _storage.get(key);
+        if (task == null) {
+          throw const CacheException('Task corrupted or deleted');
+        }
+        return task.copyWith(id: key as int);
+      }).toList();
+    } on HiveError catch (e) {
+      throw CacheException(e.message);
     }
   }
 
+  @override
+  Future<TaskModel> createTask(TaskModel task) async {
+    try {
+      final key = await _storage.add(task);
+      final saved = _storage.get(key);
+      if (saved == null) {
+        throw const CacheException('Failed to create task');
+      }
+      return saved.copyWith(id: key);
+    } on HiveError catch (e) {
+      throw CacheException(e.message);
+    }
+  }
+
+  @override
+  Future<TaskModel> updateTask(TaskModel task, int id) async {
+    try {
+      await _storage.put(id, task);
+      final saved = _storage.get(id);
+      if (saved == null) {
+        throw const CacheException('Failed to update task');
+      }
+      return saved.copyWith(id: id);
+    } on HiveError catch (e) {
+      throw CacheException(e.message);
+    }
+  }
 
   @override
   Future<void> deleteTask(int taskId) async {
-    await _box.delete(taskId);
+    try {
+      await _storage.delete(taskId);
+    } on HiveError catch (e) {
+      throw CacheException(e.message);
+    }
   }
 }
-
-

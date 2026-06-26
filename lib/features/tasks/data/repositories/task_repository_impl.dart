@@ -1,3 +1,5 @@
+import '../../../../core/error/exceptions.dart';
+import '../../../../core/error/failures.dart';
 import '../../domain/entities/task.dart';
 import '../../domain/repositories/task_repository.dart';
 import '../data_sources/task_local_data_source.dart';
@@ -9,28 +11,41 @@ class TaskRepositoryImpl implements TaskRepository {
   TaskRepositoryImpl(this.localDataSource);
 
   @override
-  Future<List<Task>> getTasks() async {
-    final models = await localDataSource.getTasks();
-    return models.map((model) => model.toDomain()).toList();
+  List<Task> getTasks() {
+    try {
+      final models = localDataSource.getTasks();
+      return models.map((model) => model.toDomain()).toList();
+    } on CacheException catch (e) {
+      throw CacheFailure(e.message);
+    }
   }
 
   @override
   Future<Task> addTask(Task task) async {
-    final savedModel = await localDataSource.saveTask(task.toModel());
-    return savedModel.toDomain();
+    try {
+      final savedModel = await localDataSource.createTask(task.toModel());
+      return savedModel.toDomain();
+    } on CacheException catch (e) {
+      throw CacheFailure(e.message);
+    }
   }
 
   @override
-  Future<Task> updateTask(Task task) async {
-    final savedModel = await localDataSource.saveTask(
-      task.toModel(),
-      id: task.id,
-    );
-    return savedModel.toDomain();
+  Future<Task> updateTask(Task task, int id) async {
+    try {
+      final savedModel = await localDataSource.updateTask(task.toModel(), id);
+      return savedModel.toDomain();
+    } on CacheException catch (e) {
+      throw CacheFailure(e.message);
+    }
   }
 
   @override
   Future<void> deleteTask(int id) async {
-    await localDataSource.deleteTask(id);
+    try {
+      await localDataSource.deleteTask(id);
+    } on CacheException catch (e) {
+      throw CacheFailure(e.message);
+    }
   }
 }
