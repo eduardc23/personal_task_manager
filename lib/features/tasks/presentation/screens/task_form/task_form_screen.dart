@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:personal_task_manager/core/constants/app_constants.dart';
 import 'package:personal_task_manager/features/tasks/presentation/screens/task_form/validators/task_validators.dart';
-import '../../../../../core/error/failure_message_extension.dart';
-import '../../../../../core/error/failures.dart';
+import '../../../../../core/utils/context_extensions.dart';
 import '../../../domain/entities/task.dart';
 import '../../providers/task_provider.dart';
 import 'widgets/task_text_field.dart';
@@ -45,13 +44,12 @@ class _TaskFormScreenState extends ConsumerState<TaskFormScreen> {
 
     try {
       await _saveTask();
-      if (mounted) {
-        Navigator.pop(context);
-      }
+      if (!mounted) return;
+
+      Navigator.pop(context);
     } catch (e) {
-      if (mounted) {
-        _showErrorSnackBar(e);
-      }
+      if (!mounted) return;
+      context.showErrorSnackBar(e);
     }
   }
 
@@ -69,16 +67,6 @@ class _TaskFormScreenState extends ConsumerState<TaskFormScreen> {
       );
       await notifier.updateTask(updatedTask);
     }
-  }
-
-  void _showErrorSnackBar(Object error) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(error.toUserMessage()),
-        backgroundColor: Theme.of(context).colorScheme.error,
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
   }
 
   @override

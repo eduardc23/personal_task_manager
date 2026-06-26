@@ -37,6 +37,9 @@ lib/
            └── presentation/            # Capa de Presentación (UI)
                 ├── providers/          # Controladores de estado (Notifiers)
                 └── screens/            # Widgets y pantallas
+                     ├── task_detail/   # Pantalla de detalle de tarea
+                     ├── task_form/     # Pantalla de creación/edición
+                     └── task_list/     # Pantalla principal de lista
 ```
 
 ## Dependencias Principales

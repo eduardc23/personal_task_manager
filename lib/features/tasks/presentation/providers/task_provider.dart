@@ -42,3 +42,12 @@ class TasksNotifier extends _$TasksNotifier {
     );
   }
 }
+
+@riverpod
+AsyncValue<Task?> taskById(Ref ref, int id) {
+  final tasks = ref.watch(tasksProvider);
+
+  return tasks.whenData(
+    (tasks) => tasks.where((task) => task.id == id).firstOrNull,
+  );
+}

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:personal_task_manager/core/constants/app_constants.dart';
 import '../../../../domain/entities/task.dart';
 import '../../../providers/task_provider.dart';
-import '../../task_form/task_form_screen.dart';
+import '../../task_detail/task_detail_screen.dart';
 
 class TaskItem extends ConsumerWidget {
   final Task task;
@@ -50,10 +50,15 @@ class TaskItem extends ConsumerWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(AppConstants.borderRadiusLarge),
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => TaskFormScreen(task: task)),
-            );
+            final id = task.id;
+            if (id != null) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => TaskDetailScreen(taskId: id),
+                ),
+              );
+            }
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(
